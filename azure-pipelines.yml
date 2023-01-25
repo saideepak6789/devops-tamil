@@ -11,6 +11,22 @@ steps:
 - script: |
     npm install
     npm run build --if-present
-        npm run test --if-present
-      displayName: 'npm install, build and test'
-    
+    npm run test --if-present
+  displayName: 'npm install, build and test'
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    replaceExistingArchive: true
+- upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+  artifact: drop 
+jobs:  
+- deployment: VMDeploy
+  displayName: stage
+  environment:
+    name:  stage
+    resourceType: VirtualMachine
+    tags: stage
