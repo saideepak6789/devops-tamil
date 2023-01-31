@@ -23,10 +23,4 @@ steps:
     replaceExistingArchive: true
 - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
   artifact: drop 
-jobs:  
-- deployment: VMDeploy
-  displayName: stage
-  environment:
-    name:  stage
-    resourceType: VirtualMachine
-    tags: stage
+
